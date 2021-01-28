@@ -36,6 +36,6 @@ for f in "${folders[@]}"; do
     cp -r "./$f" "$installdir"
 
     # Do this in a subshell so we don't have to cd back
-    (cd "$installdir/$f" && make clean)
+    (cd "$installdir/$f" && make clean install)
 done
 
