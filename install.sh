@@ -6,8 +6,11 @@ if [ "$EUID" -ne 0 ];then
     exit
 fi
 
+# Use this in paths instead of $HOME or ~
+home="$(getent passwd $SUDO_USER | cut -d: -f)"
+
 # Directory where all the projects will be copied
-installdir="/tmp/test"
+installdir="/opt"
 
 # Things that need compiling
 folders=(
@@ -18,7 +21,7 @@ folders=(
 
 declare -A others=(
 #   folder  path
-    ['other']="~/.dwm"
+    ['other']="$home/.dwm"
 )
 
 mkdir -pv "$installdir"
