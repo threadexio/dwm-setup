@@ -736,6 +736,13 @@ static const char *dmenucmd[] = {
 	NULL
 };
 
+// Screen lock
+static const char *screenlock[] = { "/home/kat/.dwm/lock.sh", NULL };
+
+// Backlight
+static const char *incbrightness[] = { "/home/kat/.dwm/backlight.sh", "inc", "5", NULL };
+static const char *decbrightness[] = { "/home/kat/.dwm/backlight.sh", "dec", "5", NULL };
+
 //static const char *en_US[] = { "/usr/bin/setxkbmap", "us", NULL };
 //static const char *gr_GR[] = { "/usr/bin/setxkbmap", "gr", NULL };
 static const char *changelang[] = { "/home/kat/.dwm/lang.sh", NULL };
@@ -768,8 +775,15 @@ static Key on_empty_keys[] = {
 static Key keys[] = {
 	/* modifier                     key            function                argument */
 	
+	// Screen lock
+	{ MODKEY,			XK_l,		spawn,			{ .v = screenlock 		}	},
+
+	// Backlight
+	{ 0,				XF86XK_MonBrightnessUp,			spawn, { .v = incbrightness	}	},
+	{ 0,				XF86XK_MonBrightnessDown,		spawn, { .v = decbrightness	}	},
+
 	// Media keys patch
-	{ 0,                       	XF86XK_AudioLowerVolume,		spawn, { .v = downvol		}	},
+	{ 0,         			XF86XK_AudioLowerVolume,		spawn, { .v = downvol		}	},
 	{ 0,                       	XF86XK_AudioMute,			spawn, { .v = mutevol		}	},
 	{ 0,                       	XF86XK_AudioRaiseVolume, 		spawn, { .v = upvol		}	},
 	{ 0,				XF86XK_AudioPlay,			spawn, { .v = playertoggle	}	},
@@ -777,12 +791,14 @@ static Key keys[] = {
 	{ 0,				XF86XK_AudioPrev,			spawn, { .v = playerprev	}	},
 	//{ ControlMask|MODKEY,		XK_m,					spawn, { .v = micmute		}	},
 	
-	{ ShiftMask|MODKEY,		XK_f,	       spawn,		       { .v = firefoxcmd } },
+	// Firefo
+	{ ShiftMask|MODKEY,		XK_f,	       spawn,		      	{ .v = firefoxcmd } },
 
-	{ MODKEY,			XK_space,      spawn,		       { .v = changelang } },
+	// Switch languages with win+space
+	{ MODKEY,			XK_space,      spawn,		       	{ .v = changelang } },
 
-	//{ ShiftMask|ControlMask,	XK_1,	       spawn,		       { .v = en_US } },
-	//{ ShiftMask|ControlMask,	XK_2,	       spawn,		       { .v = gr_GR } },
+	//{ ShiftMask|ControlMask,	XK_1,	       spawn,		       	{ .v = en_US } },
+	//{ ShiftMask|ControlMask,	XK_2,	       spawn,		       	{ .v = gr_GR } },
 
 	#if KEYMODES_PATCH
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },

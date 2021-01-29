@@ -73,9 +73,9 @@ static const struct arg args[] = {
 	
 	{ battery_perc,			"^c#ab0000^ %s%%",			"BAT0"					},
 	{ battery_remaining,		" %s  ", 				"BAT0"					},
+	{ run_command,			" %s%%  ",				"~/.dwm/backlight.sh"			},
 	
 	{ run_command,			"^c#ab00ab^墳 %s  ",			"/usr/bin/pamixer --get-volume-human"	},
-	{ run_command,			" %s  ",				"~/.dwm/mic.sh get-volume 1"		},
 
 //	{ temp,				"🌡 %sC ",				"/sys/class/hwmon/hwmon4/temp1_input"	},
 //	{ temp,				"- %sC  ",				"/sys/class/hwmon/hwmon3/temp1_input"	},

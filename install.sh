@@ -17,6 +17,7 @@ folders=(
     dwm-flexipatch
     dmenu
     slstatus
+    slock
 )
 
 declare -A others=(
