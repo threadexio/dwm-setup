@@ -1,4 +1,3 @@
 #!/usr/bin/env /usr/bin/bash
 
-/usr/bin/xset dpms force suspend
-/usr/local/bin/slock
+/usr/bin/i3lock-fancy

@@ -7,19 +7,19 @@ if [ "$EUID" -ne 0 ];then
 fi
 
 # Use this in paths instead of $HOME or ~
-home="$(getent passwd $SUDO_USER | cut -d: -f)"
+home="$(getent passwd $SUDO_USER | cut -d: -f6)"
 
 # Directory where all the projects will be copied
 installdir="/opt"
 
 # Things that need compiling
-folders=(
-    dwm-flexipatch
-    dmenu
-    slstatus
-    slock
+declare -A folders=(
+	['dwm']="make clean install"
+	['dmenu']="make clean install"
+	['poolybar-dwm-module']="./build.sh"
 )
 
+# Other folders
 declare -A others=(
 #   folder  path
     ['other']="$home/.dwm"
@@ -33,10 +33,10 @@ for f in "${!others[@]}"; do
 done
 
 # Copy & compile all projects
-for f in "${folders[@]}"; do
-    cp -r "./$f" "$installdir"
+for f in "${!folders[@]}"; do
+	cp -r "$f" "$installdir"
 
-    # Do this in a subshell so we don't have to cd back
-    (cd "$installdir/$f" && make clean install)
+	# Do this in a subshell so we don't have to cd back
+	(cd "$installdir/$f" && ${others[$f]})
 done
 

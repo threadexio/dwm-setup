@@ -1,0 +1,3 @@
+[submodule "polybar-dwm-module"]
+	path = polybar-dwm-module
+	url = https://github.com/polybar/polybar

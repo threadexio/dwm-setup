@@ -1,12 +1,18 @@
 #!/bin/bash
 
-# Wifi
-/usr/bin/nm-applet &
+# Polybar
+polybar --config=~/.dwm/polybar.conf example &
 
-/usr/local/bin/slstatus &
+/usr/bin/dunst &
+
+# Picom reduces graphical performance
+/usr/bin/picom -b
 
 # Set background
-/usr/bin/feh --bg-scale /usr/share/wallpapers/abstract.jpg
+/usr/bin/feh --bg-scale /usr/share/wallpapers/sunset.jpg
+
+# Wifi
+/usr/bin/nm-applet &
 
 sleep 3
 
