@@ -3,13 +3,13 @@
 
 static const char autostartblocksh[]     = "autostart_blocking.sh";
 static const char autostartsh[]          = "autostart.sh";
-static const char dwmdir[]               = ".dwm";
-static const char localshare[]           = "";
+static const char dwmdir[]               = "dwm";
+static const char localshare[]           = ".config/";
 static const char broken[] = "broken";
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int snap      = 10;       /* snap pixel */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
@@ -22,19 +22,22 @@ static const char *altbarclass      = "Polybar"; /* Alternate bar class name */
 static const char *altbarcmd        = "$HOME/bar.sh"; /* Alternate bar launch command */
 static const char *fonts[]          = { "Hack Nerd Font:size=10" };
 static const char dmenufont[]       = "Hack Nerd Font:size=10";
+
+// We use pywal now
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
-};
+//static const char *colors[][3]      = {
+//	/*               fg         bg         border   */
+//	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+//	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+//};
+#include "colors-wal-dwm.h"
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "ﭮ", "", "" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -47,11 +50,8 @@ static const Rule rules[] = {
 	//{ .wintype = "TOOLBAR", .isfloating = 1	},
 	//{ .wintype = "SPLASH", .isfloating = 1	},
 
-	{ .class = "discord", .tags = 1 << 6		},
-	{ .class = "firefox", .tags = 1 << 1		},
-	{ .class = "Steam", .tags = 1 << 5			},
-	{ .class = "spotify", .tags = 1 << 8		},
-	{ .class = "pulseeffects", .tags = 1 << 9	},
+	{ .class = "discord", .tags = 1 << 3		},
+	{ .class = "spotify", .tags = 1 << 4		},
 	
 };
 
@@ -81,55 +81,67 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "alacritty", "-o", "env.TERM='xterm-256color'", NULL };
+//static const char *termcmd[]  = { "kitty", NULL };
+static const char *termcmd[]  = { "kitty", NULL };
+static const char *shutdowncmd[] = { "/usr/bin/shutdown", "-P", "now", NULL };
 
 // Screen lock
-static const char *screenlock[] = { "/home/kat/.dwm/lock.sh", NULL };
+static const char *screenlock[] = { "/usr/bin/i3lock-fancy", NULL };
 
 // Backlight
-static const char *incbrightness[] = { "/home/kat/.dwm/backlight.sh", "inc", "5", NULL };
-static const char *decbrightness[] = { "/home/kat/.dwm/backlight.sh", "dec", "5", NULL };
-static const char *changelang[] = { "/home/kat/.dwm/lang.sh", NULL };
+static const char *incbrightness[] = { ".config/dwm/backlight.sh", "inc", "5", NULL };
+static const char *decbrightness[] = { ".config/dwm/backlight.sh", "dec", "5", NULL };
+static const char *changelang[] = { ".config/dwm/lang.sh", NULL };
 
-// Media keys patch
-static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
-static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
-static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
+static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%",     NULL };
+static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%",     NULL };
+static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "@DEFAULT_SINK@", "toggle",  NULL };
 static const char *playertoggle[] = { "/usr/bin/playerctl", "play-pause", NULL };
 static const char *playernext[] = { "/usr/bin/playerctl", "next", NULL };
 static const char *playerprev[] = { "/usr/bin/playerctl", "previous", NULL };
-
-static const char *micmute[] = { "/home/kat/.dwm/mic.sh", "1", NULL };
-
+static const char *micmute[] = { ".config/dwm/mic.sh", "1", NULL };
 static const char *firefoxcmd[] = { "/usr/bin/firefox", NULL };
-
-static const char *roficmd[] = { "/usr/bin/rofi", "-show", "drun", "-theme", "~/.dwm/rofi-oxide.rasi", NULL };
-
-static const char *toggle_comp[] = { "/home/kat/.dwm/toggle_comp.sh", NULL };
+static const char *roficmd[] = { "/usr/bin/rofi", "-show", "drun", "-theme", "~/.config/dwm/rofi-oxide.rasi", NULL };
+static const char *toggle_comp[] = { ".config/dwm/toggle_comp.sh", NULL };
+static const char *screenshot[] = { "/usr/bin/flameshot", "gui", NULL };
+static const char *file_manager[] = { "/usr/bin/thunar", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ ShiftMask|MODKEY,				XK_F10,		spawn,			{ .v = toggle_comp	}	},
-	{ MODKEY,						XK_s,		spawn,			{ .v = roficmd		}	},
+	{ MODKEY,			XK_e,		spawn,			{ .v = file_manager	}	},
+	{ 0,				0xff61,		spawn,			{ .v = screenshot	}	},
+	{ ShiftMask|MODKEY,	XK_F10,		spawn,			{ .v = toggle_comp	}	},
+	{ MODKEY,			XK_s,		spawn,			{ .v = roficmd		}	},
 	// Screen lock
-	{ ShiftMask|MODKEY,				XK_l,		spawn,			{ .v = screenlock 	}	},
+	{ ShiftMask|MODKEY,	XK_l,		spawn,			{ .v = screenlock 	}	},
 	// Backlight
-	{ 0,							XF86XK_MonBrightnessUp,		spawn,		{ .v = incbrightness	}	},
-	{ 0,							XF86XK_MonBrightnessDown,	spawn,		{ .v = decbrightness	}	},
+	{ 0,				XF86XK_MonBrightnessUp,		spawn,	{ .v = incbrightness	}	},
+	{ 0,				XF86XK_MonBrightnessDown,	spawn,	{ .v = decbrightness	}	},
 	// Media keys patch
-	{ 0,							XF86XK_AudioLowerVolume,	spawn,		{ .v = downvol			}	},
-	{ 0,							XF86XK_AudioMute,			spawn,		{ .v = mutevol			}	},
-	{ 0,							XF86XK_AudioRaiseVolume, 	spawn,		{ .v = upvol			}	},
-	{ 0,							XF86XK_AudioPlay,			spawn,		{ .v = playertoggle		}	},
-	{ 0,							XF86XK_AudioNext,			spawn,		{ .v = playernext		}	},
-	{ 0,							XF86XK_AudioPrev,			spawn,		{ .v = playerprev		}	},
+	{ 0,				XF86XK_AudioLowerVolume,spawn,		{ .v = downvol		}	},
+	{ 0,				XF86XK_AudioMute,		spawn,		{ .v = mutevol		}	},
+	{ 0,				XF86XK_AudioRaiseVolume,spawn,		{ .v = upvol		}	},
+	{ 0,				XF86XK_AudioPlay,		spawn,		{ .v = playertoggle	}	},
+	{ 0,				XF86XK_AudioNext,		spawn,		{ .v = playernext	}	},
+	{ 0,				XF86XK_AudioPrev,		spawn,		{ .v = playerprev	}	},
 
-	{ ShiftMask|MODKEY,			XK_m,		spawn,			{ .v = micmute		}	},
+	{ MODKEY,			XK_F2,		spawn,			{ .v = downvol		}	},
+	{ MODKEY,			XK_F1,		spawn,			{ .v = mutevol		}	},
+	{ MODKEY,			XK_F3,		spawn,			{ .v = upvol		}	},
+	{ MODKEY,			0xff55,		spawn,			{ .v = playertoggle	}	},
+	{ MODKEY,			0xff57,		spawn,			{ .v = playernext	}	},
+	{ MODKEY,			0xff50,		spawn,			{ .v = playerprev	}	},
+	{ ShiftMask|MODKEY,	XK_m,					spawn,		{ .v = micmute		}	},
 	
+	// Shutdown
+	{ ControlMask|ShiftMask|MODKEY, XK_F4,		spawn,		{ .v = shutdowncmd	}	},
+
 	// Firefox
 	{ ShiftMask|MODKEY,				XK_f,		spawn,	      	{ .v = firefoxcmd 	}	},
 	// Switch languages with win+space
 	{ MODKEY,						XK_space,	spawn,			{ .v = changelang	}	},
+
+	{ MODKEY,						XK_f,		fullscreen,		{ 0 } },
 
 
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
@@ -148,7 +160,7 @@ static Key keys[] = {
 	{ MODKEY|Mod4Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
 	{ MODKEY|Mod4Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
 	{ MODKEY|Mod4Mask,              XK_0,      togglegaps,     {0} },
-	{ MODKEY|Mod4Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
+	{ MODKEY|Mod4Mask|ShiftMask,    XK_d,      defaultgaps,    {0} },
 	{ MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
 	{ MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } },
