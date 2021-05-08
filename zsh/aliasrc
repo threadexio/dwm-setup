@@ -1,0 +1,103 @@
+alias ls='lsd -h --color=auto'
+# ls, the common ones I use a lot shortened for rapid fire usage
+alias l='lsd -lAFh --color=auto'     #size,show type,human readable
+alias la='lsd -ha --color=auto'   #long list,show almost all,show type,human readable
+alias lr='lsd -tRFh --color=auto'   #sorted by date,recursive,show type,human readable
+alias lt='lsd -ltFh --color=auto'   #long list,sorted by date,show type,human readable
+alias ll='lsd -hl --color=auto'      #long list
+alias ldot='lsd -ld .* --color=auto'
+alias lS='lsd -1FSsh --color=auto'
+alias lart='lsd -1Fcart --color=auto'
+alias lrt='lsd -1Fcrt --color=auto'
+
+alias t='tree -C --sort=name -F'
+alias ta='tree -a -C --sort=name -F'
+
+alias git="hub"
+
+alias g="grep"
+alias c="clear"
+
+alias zshrc='${EDITOR} ~/.zshrc' # Quick access to the ~/.zshrc file
+alias aliasrc='${EDITOR} ~/.zsh/aliasrc'
+
+alias grep='grep --color'
+alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+
+power() {
+	awk '{print $1*10^-6 " W"}' /sys/class/power_supply/BAT0/power_now
+}
+
+# Command line shortcuts
+alias dud='du -d 1 -h'
+alias duf='du -sh *'
+alias fd='find . -type d '
+alias ff='find . -type f '
+alias up="sudo http-server"
+alias clip="xsel -i -b "
+alias traceroute='tracepath'
+startproc() {
+	$@ &>/dev/null &!
+}
+open() {
+	xdg-open $1 &>/dev/null
+}
+rand() {
+	echo $(($RANDOM % $1))
+}
+weather() {
+	curl "https://wttr.in/$1?1mq"
+}
+
+# trim strings
+trim() {
+    local var="$*"
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"   
+    printf %s "$var"
+}
+strip() {
+	[[ $(tail -c 1 "$1") ]] || truncate -s-1 "$1"
+}
+
+# c/c++
+compile(){
+	filename=${1%.*}
+	ext=${1##*.}
+	if [[ "$ext" == "c" ]]; then
+		gcc -o "$filename" "$1" ${@: 2}
+	elif [[ "$ext" == "cpp" ]]; then
+		g++ -o "$filename" "$1" ${@: 2}
+	else
+		echo "Unknown extension"
+	fi
+}
+
+# systemctl
+alias start="sudo systemctl start "
+alias restart="sudo systemctl restart "
+alias stop="sudo systemctl stop "
+alias enable="sudo systemctl enable "
+alias disable="sudo systemctl disable "
+alias mask="sudo systemctl mask "
+alias unmask="sudo systemctl unmask "
+alias status="sudo systemctl status "
+
+# base64
+b64e(){
+	if [ $# -eq 0 ]; then
+		tee | base64;
+	else
+		echo $1 | base64;
+	fi
+}
+
+b64d(){
+	if [ $# -eq 0 ]; then
+		tee | base64 -d;
+	else
+		echo ${1} | base64 -d;
+	fi
+}

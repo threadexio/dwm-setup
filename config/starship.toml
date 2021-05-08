@@ -1,0 +1,52 @@
+add_newline = false
+
+format = "$python$jobs[$username@$hostname](green) $directory$cmd_duration$git_status$git_branch$git_commit[»](red) "
+
+[cmd_duration]
+min_time = 500
+style = "blue"
+format = " [$duration]($style)"
+
+[directory]
+read_only_style = "red"
+read_only = " "
+style = "white"
+format = "[$path]($style)[$read_only]($read_only_style)"
+
+[username]
+show_always = true
+style = "green"
+style_user = "$style"
+style_root = "red"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "green"
+format = "[$hostname]($style)"
+
+[git_branch]
+style = "yellow"
+format = "[ $symbol$branch]($style)"
+
+[git_status]
+style = "green underline"
+untracked = "?"
+staged = "+"
+modified = "!"
+format = " [$modified$untracked$staged]($style)"
+
+[git_commit]
+only_detached = false
+tag_disabled = false
+style = "green"
+format = " [⚡](yellow)[($hash)]($style) [($tag)]($style)"
+
+[jobs]
+style = "bold blue"
+symbol = "✦"
+format = "[$symbol]($style) "
+
+[python]
+style = "white"
+format = "($virtualenv)($style) "
